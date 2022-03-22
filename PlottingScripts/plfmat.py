@@ -20,8 +20,6 @@ use_cosmicfish_pylib = True
 # import cosmicfish pylib:
 if use_cosmicfish_pylib:
     import sys
-    cosmicfish_pylib_path = './PlottingScripts/cosmicfish-pyplots'
-    sys.path.insert(0, os.path.normpath(cosmicfish_pylib_path))
     import cosmicfish_pylib.fisher_matrix as fm
     import cosmicfish_pylib.utilities     as fu
     import cosmicfish_pylib.fisher_operations as fo
@@ -38,20 +36,20 @@ def processfish(filename, pars, xpars, marg=True, outfilename=''):
     """ Remove and marginalize parameters from Fisher, export Fisher and export paramnames for cosmicfish plots"""
     use_cosmicfish_pylib=True
     data, parlist = l.readfish(filename)
-    
+
     texpars = [l.TeXLabs[par] for par in parlist]
-    fidus = [l.FIDUS_BASELINE[par] for par in parlist] 
+    fidus = [l.FIDUS_BASELINE[par] for par in parlist]
     fisher = fm.fisher_matrix( fisher_matrix=data, param_names=parlist, param_names_latex=texpars, fiducial=fidus)
-    
+
     if xpars != ['']:
         staypars = [sp for sp in parlist if sp not in xpars]
         fixfish = fo.reshuffle(fisher, staypars)
-    
+
     margfish = fo.marginalise(fixfish, pars)
     if outfilename=='':
         outfilename='_processed'
     outfilename = os.path.splitext(filename)[0]+outfilename+os.path.splitext(filename)[1]
-    print("Exporting new Fisher matrix to:  "+outfilename)
+    print(("Exporting new Fisher matrix to:  "+outfilename))
     margfish.save_to_file(os.path.splitext(outfilename)[0], simple_header=True)
     return 0
 
@@ -88,7 +86,7 @@ def geterrs(filename, pars, nz, marg=False, notfound=False):
         if np.linalg.det(data) > 0:
             em = np.sqrt(np.diag(np.linalg.inv(data)))
         else:
-            print "Skipping " + filename + " marginalised, because Fisher Matrix is singular."
+            print("Skipping " + filename + " marginalised, because Fisher Matrix is singular.")
             em = eu
 
     if notfound:
@@ -119,11 +117,11 @@ def ploterrs(files, apars, case=4, ts='', marg=True, show=False, zs=l.ZS, alias=
     em = nf*[[]]
     eu = nf*[[]]
     dropped = None
-    for f,i in zip(files,range(nf)):
+    for f,i in zip(files,list(range(nf))):
         try:
             eu[i], em[i], pars, tmp = geterrs(f, apars, nz, marg, True)
         except Exception as e:
-            print traceback.print_exc()
+            print(traceback.print_exc())
             raise Exception('Error from file ' + f + '.')
         if (dropped is not None) and (len(set(tmp)-set(dropped))>0 or len(set(dropped)-set(tmp))>0):
             raise Exception('Different files contain different sets of parameters!')
@@ -157,7 +155,7 @@ def ploterrs(files, apars, case=4, ts='', marg=True, show=False, zs=l.ZS, alias=
         allerr = np.array(allerr)
         #print allerr.shape
         np.savetxt(errfile, allerr, fmt='%.10e', header=header)
-        print 'Errors saved to file ' + errfile + '.'
+        print('Errors saved to file ' + errfile + '.')
 
 
     ###
@@ -223,23 +221,23 @@ def ploterrs(files, apars, case=4, ts='', marg=True, show=False, zs=l.ZS, alias=
         plt.xlabel('z')
         plt.xlim([min(zs)-0.05, max(zs)+0.05])
         ax.tick_params(axis='x', pad=10)
-        
+
         majorLocator = MultipleLocator(0.1)
         majorFormatter = FormatStrFormatter('%.1f')
-        minorLocator = MultipleLocator(0.05) 
+        minorLocator = MultipleLocator(0.05)
         ax.xaxis.set_major_locator(majorLocator)
         ax.xaxis.set_major_formatter(majorFormatter)
         # for the minor ticks, use no labels; default NullFormatter
         ax.xaxis.set_minor_locator(minorLocator)
-        
+
         majorLocator = MultipleLocator(2.0)
-        minorLocator = MultipleLocator(1.0) 
+        minorLocator = MultipleLocator(1.0)
         majorFormatter = FormatStrFormatter('%.0f')
 
         ax.yaxis.set_major_locator(majorLocator)
         ax.yaxis.set_major_formatter(majorFormatter)
         ax.yaxis.set_minor_locator(minorLocator)
-        
+
         if yrang is None:
             yymin, yymax = plt.ylim()
             yymax = np.max(np.abs([yymin,yymax]))
@@ -338,14 +336,14 @@ def ploterrs(files, apars, case=4, ts='', marg=True, show=False, zs=l.ZS, alias=
             plt.ylim([-yrang, yrang])
         #
         majorLocator = MultipleLocator(locat)
-        minorLocator = MultipleLocator(locat/2) 
+        minorLocator = MultipleLocator(locat/2)
         majorFormatter = FormatStrFormatter('%.0f')
 
         ax.yaxis.set_major_locator(majorLocator)
         ax.yaxis.set_major_formatter(majorFormatter)
         ax.yaxis.set_minor_locator(minorLocator)
-        
-        
+
+
         if not show: fig.savefig(plotfile,dpi=400,bbox_inches='tight')
 
     return 0
@@ -363,7 +361,7 @@ def plotfmat(files, pars, case=4, ts='', marg=True, show=False, outpath='./'):
     matchind = None
     if nf > 1:
         matchings = list(its.combinations(files, 2)) #produces all possible combinations of files
-        matchind = list(its.combinations(range(nf), 2))
+        matchind = list(its.combinations(list(range(nf)), 2))
     elif nf==1:
         matchings = [(files[0], files[0])]
         matchind = [(i,i) for i in range(1)]
@@ -384,13 +382,13 @@ def plotfmat(files, pars, case=4, ts='', marg=True, show=False, outpath='./'):
 
         ftitle1 = f1.split('/')[-1]
         ftitle2 = f2.split('/')[-1]
-        print "   time stamp:\n\t" + ts
+        print("   time stamp:\n\t" + ts)
         if ftitle1 == ftitle2:
             plottit = ftitle1
-            print "   file:\n\t" + ftitle1
+            print("   file:\n\t" + ftitle1)
         else:
             plottit = ftitle1+' \n '+ftitle2
-            print "   files:\n\t" + ftitle1 + "\n\t" + ftitle2
+            print("   files:\n\t" + ftitle1 + "\n\t" + ftitle2)
         if len(data1)==nt:
             plottit += ' \nall parameters'
         else:
@@ -446,7 +444,7 @@ def check_fmat(args, nz=len(l.ZS)):
             addal.append(falias)
             addcol.append(fcol)
         else:
-            print('warning: '+os.path.basename(fpath)+' not found in folder!')
+            print(('warning: '+os.path.basename(fpath)+' not found in folder!'))
     if len(addf)==0:
         return "No matching filename found in folder"
     args.files = addf   #overwrites args.files with only valid file names, and matches the aliases and colours
@@ -513,9 +511,9 @@ if __name__=="__main__":
 
     ts = l.get_timestamp()
     if args.notstamp_outdir == True:
-        ts = ts+'-'+args.note    
+        ts = ts+'-'+args.note
         args.outpath = os.path.join(args.outpath, ts)
-        print args.outpath
+        print(args.outpath)
 
 
     if args.alias is None or len(args.alias) != len(args.files):
@@ -530,7 +528,7 @@ if __name__=="__main__":
     # after checks passed, creates directory if non-existent and if show option is not given
     if not args.show:
         ui.mkdirp(args.outpath)
-    
+
     if args.plmargonly==True:
         plotunmarg=False
         plotstr="Plotting marginalised errors."
@@ -539,10 +537,10 @@ if __name__=="__main__":
         plotstr="Plotting marginalised and unmarginalised errors."
     # Create the plots
     if args.fmat:
-        print "Plotting Fisher matrices."
+        print("Plotting Fisher matrices.")
         O = plotfmat(args.files, args.pars, args.case, ts, args.marg, args.show, args.outpath)
     elif args.errors:
-        print plotstr
+        print(plotstr)
         O = ploterrs(args.files, args.pars, args.case, ts, args.marg, args.show, l.ZS, args.alias,
                      args.outpath, plotunmarg, args.yrange, args.colours)
     elif args.imat:

@@ -9,11 +9,11 @@ sys.path.append('./PlottingScripts')
 
 from calcEllipsesFoMs import EllipsesPlot
 
-print ''
-print '**************************************************************'
-print ' This is the IST Fisher matrix ellipses plotting tool.'
-print '**************************************************************'
-print ''
+print('')
+print('**************************************************************')
+print(' This is the IST Fisher matrix ellipses plotting tool.')
+print('**************************************************************')
+print('')
 
 
 

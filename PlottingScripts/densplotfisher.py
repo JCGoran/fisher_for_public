@@ -37,21 +37,21 @@ class MidpointNormalize(Normalize):
 
 
 #this function prints a colored MatrixPlot comparing two Fisher matrices. If chosen, it prints on each square the percentage difference.
-#If a single Matrix is given, then its entry values are plotted. 
-def print_matrix_with_values(matrix1, matrix2, 
-                             out_path='./', 
-                             png_name='matrix.png', 
+#If a single Matrix is given, then its entry values are plotted.
+def print_matrix_with_values(matrix1, matrix2,
+                             out_path='./',
+                             png_name='matrix.png',
                              plot_title='',
-                             font_size=4, 
-                             font_size_title=8, 
-                             cmap='gray', 
-                             print_percentages=True, 
-                             slicestart=4, 
-                             submatrix_case="full", 
-                             exportfile=True, 
+                             font_size=4,
+                             font_size_title=8,
+                             cmap='gray',
+                             print_percentages=True,
+                             slicestart=4,
+                             submatrix_case="full",
+                             exportfile=True,
                              pars=None,
                              get_submat=False):
-    
+
     # Pretty fonts
     font_ticks = {'size': font_size}
     matplotlib.rc('font', **font_ticks)
@@ -60,11 +60,11 @@ def print_matrix_with_values(matrix1, matrix2,
     fig = pl.figure()
     ax = fig.add_subplot(111)
     ax.set_title(plot_title, fontsize=font_size_title, va='bottom', )
-    
+
     # Extract part of the matrix if not the full thing is needed
     if submatrix_case != 'full' and get_submat:
-        sl = submatr_cases(submatrix_case, slicestart)        
-        print 'slicing matrix:\n\t' + str(sl)
+        sl = submatr_cases(submatrix_case, slicestart)
+        print('slicing matrix:\n\t' + str(sl))
         matrix1 = matrix1[sl]
         matrix2 = matrix2[sl]
 
@@ -92,13 +92,13 @@ def print_matrix_with_values(matrix1, matrix2,
 
     # Plot color matrix:
     cax = ax.matshow(matrix, cmap=pl.cm.Spectral, norm=MidpointNormalize(midpoint=1.0, vmax=3.0, vmin=-1.0))
-    pl.xticks(range(matrix.shape[0]), pars, rotation=80)
-    pl.yticks(range(matrix.shape[1]), pars)
+    pl.xticks(list(range(matrix.shape[0])), pars, rotation=80)
+    pl.yticks(list(range(matrix.shape[1])), pars)
     cbar = fig.colorbar(cax, extend='max')
     ax.set_aspect('equal')
     cbar.ax.tick_params(labelsize=10)
     if addtxt: cbar.ax.set_ylabel('ratio of correlation coefficients', rotation=270, fontsize=12, labelpad=0.5)
-    cbar.ax.yaxis.set_label_position('left') 
+    cbar.ax.yaxis.set_label_position('left')
 
     # Text portion:
     if print_percentages==True:
@@ -113,7 +113,7 @@ def print_matrix_with_values(matrix1, matrix2,
         fig.savefig(output_png_path, dpi=400, bbox_inches='tight')
     else:
         pl.show()
-        
+
 # Test the code
 if __name__ == '__main__':
 
@@ -126,7 +126,7 @@ if __name__ == '__main__':
     plotpars = l.selectpars(l.PARS+l.parszd(), plotpars)
 
     # Get the files
-    PATH_IN = "./"    
+    PATH_IN = "./"
     file_name2 = "alkistis-case5-with-files-v0.2.txt"
     file_name1 = "sapone_shape_zobs_ist_case5_pk.dat"
 
@@ -136,12 +136,12 @@ if __name__ == '__main__':
     matrix2, pars2 = l.readfish(PATH_IN+file_name2)
     matrix2 = l.mreorder(pars2, matrix2, plotpars)
     sub_case='full' # this is a hack, because we are already selecting the submatrix here
-    
+
     # Title for plot
     plottit = "Alkistis vs. Santiago input"
-    
-    # Make plot        
-    print_matrix_with_values(matrix1, matrix2, out_path=PATH_IN, exportfile=False, 
-                             plot_title=plottit, font_size='6', font_size_title='10', 
+
+    # Make plot
+    print_matrix_with_values(matrix1, matrix2, out_path=PATH_IN, exportfile=False,
+                             plot_title=plottit, font_size='6', font_size_title='10',
                              print_percentages=False, submatrix_case=sub_case,
                              pars=plotpars)

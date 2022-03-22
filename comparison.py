@@ -11,11 +11,11 @@ from appXC import XCcomparison
 from appWL import WLcomparison
 from appGC import GCcomparisonPostProjection
 
-print ''
-print '**************************************************************'
-print ' This is the IST Fisher matrix comparison tool.'
-print '**************************************************************'
-print ''
+print('')
+print('**************************************************************')
+print(' This is the IST Fisher matrix comparison tool.')
+print('**************************************************************')
+print('')
 
 
 
@@ -30,10 +30,10 @@ userfisher      = args.userfisher
 observables     = args.observables
 
 if userfisher == ['TESTmatrix']: 
-   print 'The script compares multiple results with respect to their median.'
-   print 'Since no external matrix is provided, the script will compare EuclidIST matrices with a TESTmatrix, in order not to have a zero median.'
-   print 'This is done only in the XC cases (see Figure 5 of IST paper).'
-   print 'To use the other observables, please provide an external Fisher matrix'
+   print('The script compares multiple results with respect to their median.')
+   print('Since no external matrix is provided, the script will compare EuclidIST matrices with a TESTmatrix, in order not to have a zero median.')
+   print('This is done only in the XC cases (see Figure 5 of IST paper).')
+   print('To use the other observables, please provide an external Fisher matrix')
 
 
 empty=0  ## counts if nothing has been done and warns user

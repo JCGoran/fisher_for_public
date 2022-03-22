@@ -61,18 +61,18 @@ def EllipsesPlot(userfisher='', case='All', name='', color=''):
         userinifile = 'USER_'+inifile
         print(" Creating new USER ini file: ")
         shutil.copy2(basefolder+inifile, basefolder+userinifile)
-        print(basefolder+userinifile)
+        print((basefolder+userinifile))
 
         replaceInFile(basefolder+userinifile,"USERPATH",fishpos+userfisher+newline)
         replaceInFile(basefolder+userinifile,"USERFISHERNAME",thirteen+name+newline)
-        replaceInFile(basefolder+userinifile,"USERCOLOR",thirteen+color+newline)      
-        
+        replaceInFile(basefolder+userinifile,"USERCOLOR",thirteen+color+newline)
+
         inifile_full=basefolder+userinifile
     else:
         inifile_full = basefolder+inifile
-    
-    
-    runscript="python "+basefolder+'cosmicfish-pyplots/apps/'+appy+' '+inifile_full
+
+
+    runscript="python3 "+basefolder+'cosmicfish-pyplots/apps/'+appy+' '+inifile_full
 
     os.system(runscript)
     print("ellipses and fom results done")
