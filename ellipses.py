@@ -4,10 +4,8 @@ from time import time
 import datetime
 
 #IMPORTING MODULES
-sys.path.append('./PlottingScripts')
-#sys.path.append('./PlottingScripts/cosmicfishi-pyplots/cosmicfish_pylib')
 
-from calcEllipsesFoMs import EllipsesPlot
+from PlottingScripts.calcEllipsesFoMs import EllipsesPlot
 
 print('')
 print('**************************************************************')

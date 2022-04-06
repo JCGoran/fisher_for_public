@@ -50,7 +50,7 @@ def processfish(filename, pars, xpars, marg=True, outfilename=''):
         outfilename='_processed'
     outfilename = os.path.splitext(filename)[0]+outfilename+os.path.splitext(filename)[1]
     print(("Exporting new Fisher matrix to:  "+outfilename))
-    margfish.save_to_file(os.path.splitext(outfilename)[0], simple_header=True)
+    margfish.save_to_file(os.path.splitext(outfilename)[0])
     return 0
 
 def geterrs(filename, pars, nz, marg=False, notfound=False):

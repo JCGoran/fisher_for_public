@@ -4,12 +4,10 @@ from time import time
 import datetime
 
 #IMPORTING MODULES
-sys.path.append('./PlottingScripts')
-#sys.path.append('./PlottingScripts/cosmicfishi-pyplots/cosmicfish_pylib')
 
-from appXC import XCcomparison
-from appWL import WLcomparison
-from appGC import GCcomparisonPostProjection
+from PlottingScripts.appXC import XCcomparison
+from PlottingScripts.appWL import WLcomparison
+from PlottingScripts.appGC import GCcomparisonPostProjection
 
 print('')
 print('**************************************************************')
